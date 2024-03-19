@@ -49,12 +49,15 @@ export function getChainID() {
 }
 
 export function getChainName() {
-  const chainId = getEnvironmentVariable('CHAIN_ID');
+  const chainId: string = getEnvironmentVariable('CHAIN_ID');
+  const chainNames = {
+    '5': 'goerli',
+    '11155111': 'sepolia',
+    '80001': 'mumbai',
+    '80002': 'amoy'
+  };
 
-  if (chainId == '5') {
-    return 'goerli';
-  }
-  return 'mumbai';
+  return chainNames[chainId] || 'mumbai';
 }
 
 export function getEntryPointAddress(): Address {
@@ -65,18 +68,10 @@ export function getWalletFactoryAddress(): Address {
   return getEnvironmentVariable('AA_WALLET_FACTORY_ADDRESS') as Address;
 }
 
-export function getMumbaiAPIKey() {
-  return getEnvironmentVariable('AA_API_KEY_MUMBAI');
+export function getAPIKey(chainName: string) {
+  return getEnvironmentVariable(`AA_API_KEY_${chainName}`);
 }
 
-export function getGoerliAPIKey() {
-  return getEnvironmentVariable('AA_API_KEY_GOERLI');
-}
-
-export function getMumbaiAlchemyPolicyID() {
-  return getEnvironmentVariable('AA_POLICY_ID_MUMBAI');
-}
-
-export function getGoerliAlchemyPolicyID() {
-  return getEnvironmentVariable('AA_POLICY_ID_GOERLI');
+export function getAlchemyPolicyID(chainName: string) {
+  return getEnvironmentVariable(`AA_POLICY_ID_${chainName}`);
 }

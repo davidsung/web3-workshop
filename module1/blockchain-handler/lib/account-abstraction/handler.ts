@@ -6,7 +6,7 @@ import {
   type SimpleSmartAccountOwner,
   UserOperationReceipt
 } from '@alchemy/aa-core';
-import { polygonMumbai, goerli } from 'viem/chains';
+import { polygonMumbai, polygonAmoy, goerli, sepolia } from 'viem/chains';
 import { Lambda } from 'aws-sdk';
 import { ethers } from 'ethers';
 import { AlchemyProvider } from '@alchemy/aa-alchemy';
@@ -15,12 +15,10 @@ import {
   getSigningLambdaARN,
   getChainName,
   getChainID,
-  getMumbaiAPIKey,
-  getGoerliAPIKey,
+  getAPIKey,
   getEntryPointAddress,
   getWalletFactoryAddress,
-  getMumbaiAlchemyPolicyID,
-  getGoerliAlchemyPolicyID
+  getAlchemyPolicyID
 } from '../utils/parameters';
 import logger from '../utils/logger';
 
@@ -123,25 +121,19 @@ export async function sendUserOperation(
 ): Promise<string> {
   const chainName = getChainName();
 
-  const isMumbai = chainName == 'mumbai' ? true : false;
+  const APIKEY = getAPIKey(chainName);
+  const policyId = getAlchemyPolicyID(chainName);
+  const chains = {
+    'goerli': goerli,
+    'sepolia': sepolia,
+    'mumbai': polygonMumbai,
+    'amoy': polygonAmoy
+  }
 
   logger.debug(
     `starting send user op for userkeyid ${userKeyID} and sub ${sub} and owneraddress ${signingAddress}`
   );
   const owner = new SimpleKMSAccountOwner(userKeyID, sub, signingAddress);
-
-  let APIKEY;
-  let policyId;
-
-  const chain = isMumbai ? polygonMumbai : goerli;
-
-  if (isMumbai) {
-    APIKEY = getMumbaiAPIKey();
-    policyId = getMumbaiAlchemyPolicyID();
-  } else {
-    APIKEY = getGoerliAPIKey();
-    policyId = getGoerliAlchemyPolicyID();
-  }
 
   const entryPointAddress = getEntryPointAddress();
   const factoryAddress = getWalletFactoryAddress();
@@ -150,12 +142,12 @@ export async function sendUserOperation(
   let provider = new AlchemyProvider({
     apiKey: APIKEY,
     entryPointAddress,
-    chain
+    chains[chainName]
   }).connect(
     (rpcClient) =>
       new SimpleSmartContractAccount({
         entryPointAddress,
-        chain,
+        chains[chainName],
         factoryAddress,
         rpcClient,
         owner

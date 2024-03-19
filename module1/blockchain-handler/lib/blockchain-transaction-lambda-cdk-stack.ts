@@ -114,33 +114,51 @@ export class BlockchainTransactionLambdaCdkStack extends cdk.Stack {
     );
 
     // Account Abstraction Mumbai API Key
-    // todo remove
-    const AA_API_KEY_MUMBAI = "empty"
-    // const AA_API_KEY_MUMBAI = ssm.StringParameter.valueForStringParameter(
-    //   this,
-    //   '/web3/aa/mumbai_api_key'
-    // );
+    const AA_API_KEY_MUMBAI = ssm.StringParameter.valueForStringParameter(
+      this,
+      '/web3/aa/mumbai_api_key'
+    );
+
+    // Account Abstraction Amoy API Key
+    const AA_API_KEY_AMOY = ssm.StringParameter.valueForStringParameter(
+      this,
+      '/web3/aa/amoy_api_key'
+    );
 
     // Account Abstraction Goerli API Key
-
     const AA_API_KEY_GOERLI = ssm.StringParameter.valueForStringParameter(
       this,
       '/web3/aa/goerli_api_key'
     );
 
+    // Account Abstraction Sepolia API Key
+    const AA_API_KEY_SEPOLIA = ssm.StringParameter.valueForStringParameter(
+      this,
+      '/web3/aa/sepolia_api_key'
+    );
+
     // Account Abstraction Mumbai Alchemy Policy ID
-    // todo remove 
-    const AA_POLICY_ID_MUMBAI = "empty"
-    // const AA_POLICY_ID_MUMBAI = ssm.StringParameter.valueForStringParameter(
-    //   this,
-    //   '/web3/aa/mumbai_alchemy_policy_id'
-    // );
+    const AA_POLICY_ID_MUMBAI = ssm.StringParameter.valueForStringParameter(
+      this,
+      '/web3/aa/mumbai_alchemy_policy_id'
+    );
+
+    // Account Abstraction Amoy Alchemy Policy ID
+    const AA_POLICY_ID_AMOY = ssm.StringParameter.valueForStringParameter(
+      this,
+      '/web3/aa/amoy_alchemy_policy_id'
+    );
 
     // Account Abstraction Goerli Alchemy Policy ID
-
     const AA_POLICY_ID_GOERLI = ssm.StringParameter.valueForStringParameter(
       this,
       '/web3/aa/goerli_alchemy_policy_id'
+    );
+
+    // Account Abstraction Sepolia Alchemy Policy ID
+    const AA_POLICY_ID_SEPOLIA = ssm.StringParameter.valueForStringParameter(
+      this,
+      '/web3/aa/sepolia_alchemy_policy_id'
     );
 
     // Graph indexer endpoint
@@ -164,9 +182,13 @@ export class BlockchainTransactionLambdaCdkStack extends cdk.Stack {
         AA_ENTRY_POINT_ADDRESS,
         AA_WALLET_FACTORY_ADDRESS,
         AA_API_KEY_MUMBAI,
+        AA_API_KEY_AMOY,
         AA_API_KEY_GOERLI,
+        AA_API_KEY_SEPOLIA,
         AA_POLICY_ID_MUMBAI,
+        AA_POLICY_ID_AMOY,
         AA_POLICY_ID_GOERLI,
+        AA_POLICY_ID_SEPOLIA,
         INDEXER_ENDPOINT
       },
       role: lambdaRole,
