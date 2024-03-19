@@ -11,14 +11,14 @@ import web3.eth
 from eth_account import Account
 from ecdsa import SigningKey, SECP256k1
 
-from aws_lambda_powertools import Logger
+import logging
 
 session = boto3.session.Session()
 client_ssm = boto3.client("ssm")
 client_kms = boto3.client("kms")
 client_ddb = boto3.client("dynamodb")
 
-logger = Logger()
+logger = logging.getLogger()
 
 
 def get_chain_id() -> int:

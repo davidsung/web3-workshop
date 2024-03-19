@@ -9,13 +9,13 @@ import web3.eth
 import eth_typing
 from web3.exceptions import ContractLogicError
 
-from aws_lambda_powertools import Logger
+import logging
 from aa_abi import ENTRYPOINT_ABI, ACCOUNT_FACTORY_ABI
 
 session = boto3.session.Session()
 client_ssm = boto3.client("ssm")
 
-logger = Logger()
+logger = logging.getLogger()
 
 
 def get_account_address(public_address: str) -> eth_typing.ChecksumAddress:
